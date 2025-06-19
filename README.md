@@ -1,43 +1,48 @@
+
+
 # 🕵️ Fake Review Detector App
 
-![Streamlit UI](https://your-screenshot-link.com/preview.png) <!-- (Optional) Replace with your deployed screenshot URL -->
+![Streamlit UI](https://fake-review-detector-b6fhdtpv33jakrjmhvjqlh.streamlit.app)
 
 ## 📌 Overview
 
 This is a lightweight AI-powered web app built using **Streamlit** to detect **fake or suspicious product reviews** using both:
-- Rule-based logic (repetitions, length, sentiment, superlatives, spam)
-- A trained **ML model** (Logistic Regression on fake reviews)
+- 🔍 Rule-based logic (repetitions, length, sentiment, superlatives, spam)
+- 🧠 A trained ML model (Logistic Regression)
 
-✅ Ideal for building trust on e-commerce platforms!
+Ideal for building trust on e-commerce platforms.
 
 ---
 
 ## 🚀 Live Demo
 
-🔗 Try it here: [https://your-app-name.streamlit.app](https://your-app-name.streamlit.app)
+🔗 **Try the app:**  
+👉 [https://fake-review-detector-b6fhdtpv33jakrjmhvjqlh.streamlit.app](https://fake-review-detector-b6fhdtpv33jakrjmhvjqlh.streamlit.app)
 
 ---
 
 ## 🔧 Features
 
-- ✅ Check single review for suspicious patterns
-- 📂 Upload a `.csv` file to analyze multiple reviews at once
-- 🧠 Get AI-powered ML-based predictions (if model files exist)
-- 📉 Genuineness score and pie chart breakdown
-- 📥 Download prediction results as CSV
+- 📝 Analyze single reviews
+- 📂 Upload and analyze a CSV file of reviews
+- 🤖 ML model-based predictions (if model files exist)
+- 📊 Genuineness score + reason breakdown + pie charts
+- 📥 Download results in CSV format
 
 ---
 
 ## 📸 Screenshots
 
-### 📝 Single Review Checker
-![Single Review](https://your-screenshot-link.com/single.png)
+> Replace these links with real screenshots later.
 
-### 📂 Bulk CSV Upload
-![CSV Upload](https://your-screenshot-link.com/bulk.png)
+### Home
+![Home](https://via.placeholder.com/600x350?text=Home+Screen)
 
-### 🤖 ML Review Classifier
-![ML Review](https://your-screenshot-link.com/ml.png)
+### CSV Upload
+![CSV](https://via.placeholder.com/600x350?text=CSV+Upload)
+
+### ML Prediction
+![ML](https://via.placeholder.com/600x350?text=ML+Prediction+Tab)
 
 ---
 
@@ -45,11 +50,11 @@ This is a lightweight AI-powered web app built using **Streamlit** to detect **f
 
 - Python
 - Streamlit
-- TextBlob (for sentiment)
-- Scikit-learn (Logistic Regression)
+- TextBlob
+- Scikit-learn
 - Pandas & Matplotlib
 
 ---
 
-## 📁 File Structure
+## 📁 Project Files
 
