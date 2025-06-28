@@ -1,6 +1,10 @@
 streamlit
+whisper
+torch
+numpy
 pandas
-textblob
 matplotlib
-scikit-learn
+textblob
 joblib
+deep_translator
+streamlit-mic-recorder
