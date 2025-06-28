@@ -9,3 +9,5 @@ textblob
 joblib
 deep-translator
 streamlit-mic-recorder
+scikit-learn
+
