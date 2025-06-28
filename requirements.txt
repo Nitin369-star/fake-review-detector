@@ -1,10 +1,11 @@
 streamlit
-whisper
+openai-whisper
+ffmpeg-python
 torch
 numpy
 pandas
 matplotlib
 textblob
 joblib
-deep_translator
+deep-translator
 streamlit-mic-recorder
