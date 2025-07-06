@@ -26,7 +26,8 @@ See a genuineness score, rule violation breakdown, and pie chart visualization f
 Export analyzed results as a CSV file.
 
 🖥️ Live Demo
-Click here to try the app on Streamlit Cloud
+[Click here to try the app on Streamlit Cloud](https://fake-review-detector-b6fhdtpv33jakrjmhvjqlh.streamlit.app/)
+
 
 🛠️ Tech Stack
 Component	 ->Purpose
