@@ -6,15 +6,14 @@ from tempfile import NamedTemporaryFile
 import pandas as pd
 import matplotlib.pyplot as plt
 from textblob import TextBlob
-from deep_translator import GoogleTranslator  # fallback if detection or translation fails
-
+from deep_translator import GoogleTranslator
 import joblib
 import os
 
 # Load Whisper model
 @st.cache_resource
 def load_whisper_model():
-    return whisper.load_model("base")
+    return whisper.load_model("tiny")
 
 whisper_model = load_whisper_model()
 
@@ -30,29 +29,32 @@ def load_ml_model():
 
 ml_model, vectorizer = load_ml_model()
 
-# Title
 st.title("📝 Voice Review Sentiment & Fake Review Detector")
 
-# Audio file uploader
+# --- Audio file uploader and transcription ---
 audio_file = st.file_uploader("🎙️ Upload or record your review", type=["mp3", "wav", "webm"])
 if audio_file is not None:
     st.audio(audio_file)
-    with NamedTemporaryFile(suffix=".webm", delete=False) as tmp:
+    file_ext = os.path.splitext(audio_file.name)[1]
+    with NamedTemporaryFile(suffix=file_ext, delete=False) as tmp:
         tmp.write(audio_file.read())
         tmp.flush()
-        with st.spinner("Transcribing audio..."):
-            result = whisper_model.transcribe(tmp.name)
-    st.success("Transcription complete!")
-    st.write("🗣️ Transcribed:", result["text"])
+        try:
+            with st.spinner("Transcribing audio..."):
+                result = whisper_model.transcribe(tmp.name)
+            st.success("Transcription complete!")
+            st.write("🗣️ Transcribed:", result["text"])
+        except Exception as e:
+            st.error(f"Error during transcription: {e}")
 
-# Translation function
+# --- Translation function ---
 def translate_review(text, target_lang='en'):
     try:
         return GoogleTranslator(source='auto', target=target_lang).translate(text)
     except Exception:
         return text  # fallback if translation fails
 
-# Fake review detection logic
+# --- Fake review detection logic ---
 def check_review(review_text, rating=None):
     fake_score = 0
     reasons = []
@@ -79,21 +81,20 @@ def check_review(review_text, rating=None):
         reasons.append("All caps or emoji overload")
 
     if rating is not None:
-     polarity = TextBlob(review_text).sentiment.polarity
-    # Case 1: Rating is low, but sentiment is very positive
-     if rating <= 2 and polarity > 0.5:
-        fake_score += 1
-        reasons.append("Positive tone but low rating")
-    # Case 2: Rating is high, but sentiment is very negative
-     elif rating >= 4 and polarity < -0.3:
-        fake_score += 1
-        reasons.append("Negative tone but high rating")
-
+        polarity = TextBlob(review_text).sentiment.polarity
+        # Case 1: Rating is low, but sentiment is very positive
+        if rating <= 2 and polarity > 0.5:
+            fake_score += 1
+            reasons.append("Positive tone but low rating")
+        # Case 2: Rating is high, but sentiment is very negative
+        elif rating >= 4 and polarity < -0.3:
+            fake_score += 1
+            reasons.append("Negative tone but high rating")
 
     score = max(0, 100 - (fake_score * 20))
     return score, fake_score, reasons
 
-# Tabs
+# --- Tabs ---
 tab1, tab2, tab3 = st.tabs([
     "📝 Check Single Review",
     "📂 Bulk Review CSV Upload",
@@ -105,11 +106,20 @@ with tab1:
     review = st.text_area("✍️ Enter your product review")
     from streamlit_mic_recorder import mic_recorder
     st.subheader("🎙️ Or use voice input:")
-    audio_text = mic_recorder(start_prompt="🎤 Record Review", stop_prompt="🛑 Stop", just_once=True)
+    audio_dict = mic_recorder(start_prompt="🎤 Record Review", stop_prompt="🛑 Stop", just_once=True, format="webm")
 
-    if audio_text:
-        review = audio_text
-        st.info(f"🗣️ Transcribed: {review}")
+    # If user records audio, transcribe it
+    if audio_dict and "bytes" in audio_dict:
+        with NamedTemporaryFile(suffix=".webm", delete=False) as tmp:
+            tmp.write(audio_dict["bytes"])
+            tmp.flush()
+            try:
+                with st.spinner("Transcribing voice input..."):
+                    result = whisper_model.transcribe(tmp.name)
+                review = result["text"]
+                st.info(f"🗣️ Transcribed: {review}")
+            except Exception as e:
+                st.error(f"Error during voice transcription: {e}")
 
     rating = st.slider("🌟 Star Rating", 1, 5, 3)
 
