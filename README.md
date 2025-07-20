@@ -51,7 +51,7 @@ ML Prediction:
 Enter a review in the ML tab to get a machine learning-based authenticity prediction.
 📦 Installation
 Clone the repository:
-git clone https://github.com/yourusername/fake-review-detector.git
+git clone https://github.com/Nitin369-star/fake-review-detector.git
 cd fake-review-detector
 
 Install Python dependencies:
