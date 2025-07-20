@@ -31,7 +31,7 @@ ml_model, vectorizer = load_ml_model()
 
 st.title("📝 Voice Review Sentiment & Fake Review Detector")
 
-# --- Audio file uploader and transcription ---
+#  Audio file uploader and transcription 
 audio_file = st.file_uploader("🎙️ Upload or record your review", type=["mp3", "wav", "webm"])
 if audio_file is not None:
     st.audio(audio_file)
@@ -47,14 +47,14 @@ if audio_file is not None:
         except Exception as e:
             st.error(f"Error during transcription: {e}")
 
-# --- Translation function ---
+#  Translation function 
 def translate_review(text, target_lang='en'):
     try:
         return GoogleTranslator(source='auto', target=target_lang).translate(text)
     except Exception:
         return text  # fallback if translation fails
 
-# --- Fake review detection logic ---
+#  Fake review detection logic 
 def check_review(review_text, rating=None):
     fake_score = 0
     reasons = []
@@ -82,11 +82,11 @@ def check_review(review_text, rating=None):
 
     if rating is not None:
         polarity = TextBlob(review_text).sentiment.polarity
-        # Case 1: Rating is low, but sentiment is very positive
+        # Case 1: Rating is low but sentiment is very positive
         if rating <= 2 and polarity > 0.5:
             fake_score += 1
             reasons.append("Positive tone but low rating")
-        # Case 2: Rating is high, but sentiment is very negative
+        # Case 2: Rating is high but sentiment is very negative
         elif rating >= 4 and polarity < -0.3:
             fake_score += 1
             reasons.append("Negative tone but high rating")
@@ -94,14 +94,14 @@ def check_review(review_text, rating=None):
     score = max(0, 100 - (fake_score * 20))
     return score, fake_score, reasons
 
-# --- Tabs ---
+#  Tabs 
 tab1, tab2, tab3 = st.tabs([
     "📝 Check Single Review",
     "📂 Bulk Review CSV Upload",
     "🤖 ML-Based Prediction"
 ])
 
-# --- Tab 1: Single Review ---
+# Tab 1: Single Review 
 with tab1:
     review = st.text_area("✍️ Enter your product review")
     from streamlit_mic_recorder import mic_recorder
@@ -153,7 +153,7 @@ with tab1:
             ax.pie(values, labels=labels, autopct='%1.0f%%')
             st.pyplot(fig)
 
-# --- Tab 2: Bulk Review ---
+# Tab 2: Bulk Review 
 with tab2:
     uploaded_file = st.file_uploader("📂 Upload CSV with a 'review' column", type=["csv"])
     if uploaded_file is not None:
@@ -192,7 +192,7 @@ with tab2:
             csv = result_df.to_csv(index=False).encode('utf-8')
             st.download_button("📥 Download Results", csv, "review_results.csv", "text/csv")
 
-# --- Tab 3: ML-Based Prediction ---
+# Tab 3: ML-Based Prediction 
 with tab3:
     st.header("🧠 ML-Based Review Classifier")
     ml_input = st.text_area("Enter a review to predict using ML model:")
